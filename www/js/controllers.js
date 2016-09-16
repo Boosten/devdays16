@@ -1,21 +1,29 @@
 angular.module('starter.controllers', [])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+    .controller('AppCtrl', function ($scope, $ionicModal, $timeout) {
 
-  // With the new view caching in Ionic, Controllers are only called
-  // when they are recreated or on app start, instead of every page change.
-  // To listen for when this page is active (for example, to refresh data),
-  // listen for the $ionicView.enter event:
-  //$scope.$on('$ionicView.enter', function(e) {
-  //});
+      // With the new view caching in Ionic, Controllers are only called
+      // when they are recreated or on app start, instead of every page change.
+      // To listen for when this page is active (for example, to refresh data),
+      // listen for the $ionicView.enter event:
+      //$scope.$on('$ionicView.enter', function(e) {
+      //});
 
-  // Form data for the login modal
+      // Form data for the login modal
 
-})
+    })
 
+    .controller('AgendaCtrl', function ($scope, $stateParams, DevDaysService, $log) {
 
-.controller('AgendaCtrl', function($scope, $stateParams) {
-})
+      var vm = this;
 
-.controller('InformatieCtrl', function($scope, $stateParams) {
-});
+      vm.sessions = [];
+
+      DevDaysService.getEvent()
+          .then(function (response) {
+            vm.sessions = response.sessions;
+          });
+    })
+
+    .controller('InformatieCtrl', function ($scope, $stateParams) {
+    });

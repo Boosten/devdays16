@@ -8,8 +8,16 @@
   
   <!-- CONTENT -->
   <ion-content>
+    <ion-list>
+      
+      <ion-item ng-repeat="session in vm.sessions">
+        <!--TODO present sessions grouped by day-->
+        <pre>{{ session | json }}</pre>
+      </ion-item>
     
+    </ion-list>
   </ion-content>
   <!-- /CONTENT -->
-  
+
 </ion-view>
+w
