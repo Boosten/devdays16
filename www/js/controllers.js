@@ -22,6 +22,9 @@ angular.module('starter.controllers', [])
       DevDaysService.getEvent()
           .then(function (response) {
             vm.sessions = response.sessions;
+          })
+          .catch(function (error) {
+            $log.error('GetEvents error: ', error);
           });
     })
 

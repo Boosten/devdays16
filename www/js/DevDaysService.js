@@ -24,15 +24,26 @@ angular.module('devdays.api', [])
 
       // Return the actual factory
       // TODO make minifcation safe?
-      this.$get = function ($log, $http) {
+      this.$get = function ($log, $http, $q) {
 
         function getEvent() {
           return $http.get(BASE_URL + '/events', {params: {'companyCode': COMPANY_GUID}})
               .then(function (response) {
-                // get the event with the specific ID
-                return response.data.filter(function (obj) {
-                  return obj.id === EVENT_ID;
-                })[0];
+                // lalala
+                if (response && response.data) {
+                  // get the event with the specific ID
+                  var filtered = response.data.filter(function (obj) {
+                    return obj.id === EVENT_ID;
+                  });
+                  // check if the specific event exists in our data
+                  if (filtered && filtered[0]) {
+                    return filtered[0];
+                  } else {
+                    return $q.reject('NO EVENT FOUND WITH ID: ' + EVENT_ID);
+                  }
+                } else {
+                  return $q.reject('NO DATA FOUND');
+                }
               });
         }
 
