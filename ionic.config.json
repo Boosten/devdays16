@@ -1,0 +1,11 @@
+{
+  "name": "DevDays16",
+  "app_id": "",
+  "defaultBrowser": "chrome",
+  "proxies": [
+    {
+      "path": "/api",
+      "proxyUrl": "http://qnh-events.azurewebsites.net/api"
+    }
+  ]
+}
