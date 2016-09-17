@@ -58,8 +58,8 @@ angular.module('starter', [
             templateUrl: 'templates/menu.html',
             controller: 'AppCtrl as vm'
           })
-          .state('app.zaterdag', {
-            url: '/zaterdag',
+          .state('app.agenda', {
+            url: '/agenda/:day',
             views: {
               'menuContent': {
                 templateUrl: 'templates/agenda/agenda.html',
@@ -67,12 +67,12 @@ angular.module('starter', [
               }
             }
           })
-          .state('app.vrijdag', {
-            url: '/vrijdag',
+          .state('app.agendaItem', {
+            url: '/agendaItem/:itemId',
             views: {
               'menuContent': {
-                templateUrl: 'templates/agenda/agenda.html',
-                controller: 'AgendaCtrl as vm'
+                templateUrl: 'templates/agendaItem/agendaItem.html',
+                controller: 'AgendaItemCtrl as vm'
               }
             }
           })
@@ -87,5 +87,5 @@ angular.module('starter', [
           });
 
       // if none of the above states are matched, use this as the fallback
-      $urlRouterProvider.otherwise('/app/vrijdag');
+      $urlRouterProvider.otherwise('/app/agenda/friday');
     });
