@@ -13,6 +13,10 @@ var paths = {
 
 gulp.task('default', ['sass']);
 
+// start some tasks on serve command (the gulpStartupTasks in the ionic.config.json file don't work properly anymore with the Ionic CLI 2.0.0)
+gulp.task('serve:before', ['sass', 'watch']);
+
+
 gulp.task('sass', function(done) {
   gulp.src('./scss/ionic.app.scss')
     .pipe(sass())
