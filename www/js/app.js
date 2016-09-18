@@ -36,34 +36,34 @@ angular.module('starter', [
           .setCompanyGUID('C116B1BF-C4B8-4EC4-B34A-0988B99CB225');
 
       $stateProvider
-          .state('app', {
-            url: '/app',
+          .state('tab', {
+            url: '/tab',
             abstract: true,
-            templateUrl: 'templates/menu.html',
+            templateUrl: 'templates/tabs.html',
             controller: 'AppCtrl as vm'
           })
-          .state('app.agenda', {
+          .state('tab.agenda', {
             url: '/agenda',
             views: {
-              'menuContent': {
+              'tab-agenda': {
                 templateUrl: 'templates/agenda/agenda.html',
                 controller: 'AgendaCtrl as vm'
               }
             }
           })
-          .state('app.agenda.detail', {
+          .state('tab.agenda.detail', {
             url: '/:sessionId',
             views: {
-              'menuContent@app': {
+              'tab-agenda@tab': {
                 templateUrl: 'templates/agenda/detail/detail.html',
                 controller: 'DetailController as vm'
               }
             }
           })
-          .state('app.informatie', {
+          .state('tab.information', {
             url: '/informatie',
             views: {
-              'menuContent': {
+              'tab-information': {
                 templateUrl: 'templates/informatie/informatie.html',
                 controller: 'AgendaCtrl as vm'
               }
