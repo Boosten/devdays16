@@ -2,27 +2,27 @@
   
   <!-- NAVBAR -->
   <ion-nav-title>
-    <h1 class="title">{{ vm.day }}</h1>
+    Agenda
   </ion-nav-title>
   <!-- /NAVBAR -->
   
   <!-- CONTENT -->
   <ion-content>
     <ion-list>
-      
-      <ion-item ng-repeat="session in vm.todaySessions">
-        <!--TODO present sessions grouped by day-->
-        <a class="item item-icon-right" href="#/app/agendaItem/{{session.id}}">
+      <div ng-repeat="(key, value) in vm.days">
+        <ion-item class="item item-divider item-balanced">
+          {{ key }}
+        </ion-item>
+        <ion-item ng-repeat="session in value | orderBy:'startTime' track by session.id" class="item item-icon-right item-avatar" ui-sref="app.agenda.detail({'sessionId': session.id})">
+          <img ng-src="{{session.speaker.photoUrl || 'img/ionic.png'}}">
           <h2>{{ session.title }}</h2>
           <p>{{ session.subTitle }}</p>
-          <p>{{ session.startTimeInFormat }}</p>
+          <p>{{ session.startTime | date:'H:mm' }}</p>
           <i class="icon ion-chevron-right"></i>
-        </a>
-      </ion-item>
-    
+        </ion-item>
+      </div>
     </ion-list>
   </ion-content>
   <!-- /CONTENT -->
 
 </ion-view>
-w

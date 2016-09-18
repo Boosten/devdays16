@@ -17,73 +17,35 @@ angular.module('starter.controllers', [])
 
       var vm = this;
 
-      if ($stateParams.day == "friday") {
-        vm.day = "vrijdag"
-      } else if ($stateParams.day == "saturday") {
-        vm.day = "zaterdag"
-      }
-
-      vm.sessions = [];
-
       DevDaysService.getEvent()
           .then(function (response) {
-            vm.sessions = response.sessions;
-
-            vm.todaySessions = [];
-
-            vm.fridaySessions = [];
-            vm.saturdaySessions = [];
-
-            vm.sessions.forEach(function (session) {
-              var startDate = new Date(session.startTime);
-              var endDate = new Date(session.endTime);
-
-              session.startTimeInFormat = startDate.getHours() + ":" + startDate.getMinutes() + " - " + endDate.getHours() + ":" + endDate.getMinutes();
-
-              if (startDate.getDay() == 5) { // FRIDAY
-                vm.fridaySessions.push(session);
-              } else if (startDate.getDay() == 6) { // SATURDAY
-                vm.saturdaySessions.push(session);
-              } else {
-                console.error("EVENT IS NOT ON FRIDAY OR SATURDAY? ", session);
-              }
-            });
-
-            if ($stateParams.day == "friday") {
-              vm.todaySessions = vm.fridaySessions;
-            } else if ($stateParams.day == "saturday") {
-              vm.todaySessions = vm.saturdaySessions;
-            }
-
+            // Group our days so we can repeat over it more easily
+            vm.days = {
+              Vrijdag: getDataByDay(response.sessions, "startTime", 5),
+              Zaterdag: getDataByDay(response.sessions, "startTime", 6)
+            };
           })
           .catch(function (error) {
             $log.error('GetEvents error: ', error);
           });
 
+      // filter the data by the specified day on the specified key
+      function getDataByDay(data, key, day) {
+        return data.filter(function (s) {
+          return (new Date(s[key])).getDay() === day;
+        });
+      }
     })
 
     .controller('InformatieCtrl', function ($scope, $stateParams) {
     })
 
-    .controller('AgendaItemCtrl', function ($scope, $stateParams, DevDaysService, $log) {
-
+    .controller('DetailController', function ($scope, $stateParams, DevDaysService, $log) {
       var vm = this;
 
-      DevDaysService.getEvent()
+      DevDaysService.getSessionById($stateParams.sessionId)
           .then(function (response) {
-            vm.sessions = response.sessions;
-
-            vm.sessions.forEach(function(session) {
-              if (session.id == $stateParams.itemId) {
-                vm.agendaItem = session;
-              }
-            })
-
-          })
-          .catch(function (error) {
-            $log.error('GetEvents error: ', error);
+            $log.debug('got session:', response);
+            vm.session = response;
           });
-
-      console.log($stateParams);
-
     });
