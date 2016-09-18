@@ -47,9 +47,18 @@ angular.module('devdays.api', [])
               });
         }
 
+        function getSessionById(sessionId) {
+          // TODO implement me
+          return $q.when({
+            id: 3,
+            description: 'test'
+          });
+        }
+
         //return the public API
         return {
-          getEvent: getEvent
+          getEvent: getEvent,
+          getSessionById: getSessionById
         };
       };
     });

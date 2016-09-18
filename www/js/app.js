@@ -43,7 +43,7 @@ angular.module('starter', [
             controller: 'AppCtrl as vm'
           })
           .state('app.agenda', {
-            url: '/agenda/:day',
+            url: '/agenda',
             views: {
               'menuContent': {
                 templateUrl: 'templates/agenda/agenda.html',
@@ -51,12 +51,12 @@ angular.module('starter', [
               }
             }
           })
-          .state('app.agendaItem', {
-            url: '/agendaItem/:itemId',
+          .state('app.agenda.detail', {
+            url: '/:sessionId',
             views: {
-              'menuContent': {
-                templateUrl: 'templates/agendaItem/agendaItem.html',
-                controller: 'AgendaItemCtrl as vm'
+              'menuContent@app': {
+                templateUrl: 'templates/agenda/detail/detail.html',
+                controller: 'DetailController as vm'
               }
             }
           })
