@@ -7,5 +7,13 @@
       "path": "/api",
       "proxyUrl": "http://qnh-events.azurewebsites.net/api"
     }
+  ],
+  "gulpStartupTasks": [
+    "sass",
+    "watch"
+  ],
+  "watchPatterns": [
+    "www/**/*",
+    "!www/lib/**/*"
   ]
 }
