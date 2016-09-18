@@ -7,7 +7,9 @@
 angular.module('starter', [
   'ionic',
   'starter.controllers',
-  'devdays.api'])
+  'devdays.api',
+  'devdays.settings'
+])
 
     .run(function ($ionicPlatform) {
       $ionicPlatform.ready(function () {
@@ -25,29 +27,11 @@ angular.module('starter', [
       });
     })
 
-    .config(function ($stateProvider, $urlRouterProvider, DevDaysServiceProvider, $httpProvider) {
-
-      const QNH_EVENTS_URL = 'http://qnh-events.azurewebsites.net';
-
-      /**
-       * Check if the app is running on a device before requesting /rest.
-       * Prepend the host base url to create an absolute url because on a device the app runs from file:// instead of http://
-       * any REST request would then be made to file://...../api/xxx. We have to route this request to the proper endpoint
-       */
-      $httpProvider.interceptors.push(function ($injector) {
-        return {
-          request: function (config) {
-            if (config && config.url && config.url.indexOf('/api') > -1 && window.cordova && (window.location.protocol === 'file:')) {
-              config.url = QNH_EVENTS_URL + config.url;
-            }
-            return config;
-          }
-        };
-      });
+    .config(function ($stateProvider, $urlRouterProvider, DevDaysServiceProvider, $httpProvider, APPSETTINGS) {
 
       // Configure our API Service
       DevDaysServiceProvider
-          .setBaseUrl('/api')
+          .setBaseUrl(APPSETTINGS.BASEURL) // this can be a relative url (for use with Ionic serve), or a absolute url for use on an actual device
           .setEventID(7)
           .setCompanyGUID('C116B1BF-C4B8-4EC4-B34A-0988B99CB225');
 
