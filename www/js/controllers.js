@@ -46,6 +46,7 @@ angular.module('starter.controllers', [])
       DevDaysService.getSessionById($stateParams.sessionId)
           .then(function (response) {
             $log.debug('got session:', response);
-            vm.session = response;
+            // Convert array to object. Return last item from array as an object.
+            vm.session = response.pop();
           });
     });
