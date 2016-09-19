@@ -48,4 +48,15 @@ angular.module('starter.controllers', [])
             $log.debug('got session:', response);
             vm.session = response;
           });
-    });
+    })
+    .controller('RatingController', function ($scope, $stateParams, DevDaysService, $log) {
+       var vm = this;
+
+       DevDaysService.getSessionById($stateParams.sessionId)
+          .then(function (response) {
+            $log.debug('got session:', response);
+            vm.session = response;
+          });
+       });
+
+      

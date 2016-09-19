@@ -8,8 +8,16 @@
   
   <!-- CONTENT -->
   <ion-content>
+
     detail view:
     <pre>{{ vm.session |json }}</pre>
+
+    <div class="content padding">
+
+      <button class="button button-block button-balanced" ui-sref="tab.agenda.detail.rating({ sessionId: vm.session.id})">
+        Geef je mening! 
+      </button>
+    </div>
   </ion-content>
   <!-- /CONTENT -->
 

@@ -60,6 +60,15 @@ angular.module('starter', [
               }
             }
           })
+          .state('tab.agenda.detail.rating', {
+            url: '/mening',
+            views: {
+              'tab-agenda@tab': {
+                templateUrl: 'templates/agenda/detail/rating/rating.html',
+                controller: 'RatingController as vm'
+              }
+            }
+          })
           .state('tab.information', {
             url: '/informatie',
             views: {
@@ -71,5 +80,5 @@ angular.module('starter', [
           });
 
       // if none of the above states are matched, use this as the fallback
-      $urlRouterProvider.otherwise('/app/agenda/friday');
+      $urlRouterProvider.otherwise('/tab/agenda');
     });

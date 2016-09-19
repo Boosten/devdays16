@@ -54,10 +54,10 @@ angular.module('devdays.api', [])
         function getSessionById(sessionId) {
           // use our cached event
           if (event) {
-            return $q.when(getSession());
+            return $q.when(getSession()[0]);
           } else {
             //else get it from the server
-            return getEvent().then(getSession);
+            return getEvent().then(getSession[0]);
           }
 
           function getSession() {

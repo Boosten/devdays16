@@ -1,0 +1,34 @@
+<ion-view class="detail-view">
+<!-- NAVBAR -->
+<ion-nav-title>
+Geef je mening
+</ion-nav-title>
+<!-- /NAVBAR -->
+<!-- CONTENT -->
+<ion-content>
+<div class="content padding">
+	<a class="item item-avatar">
+		<img src="{{ vm.session.speaker.photoUrl }}">
+		<h2>{{ vm.session.speaker.name }}</h2>
+		<p>{{ vm.session.subTitle }}</p>
+		<p>{{ vm.session.startTime | date:'H:mm' }} - {{ vm.session.endTime | date:'H:mm' }}</p>
+	</a>
+	
+	<div class="list">
+		<label class="item item-input item-stacked-label">
+			<span class="input-label">Opmerkingen/Suggesties</span>
+			<textarea rows="10">
+			</textarea>
+		</label>
+		<div class="item range">
+			<i class="icon ion-thumbsdown"></i>
+			<input type="range" name="rating" step="1" min="0" max="5">
+			<i class="icon ion-thumbsup"></i>
+		</div>
+	</div>
+	<button class="button icon-center ion-checkmark-round button-block button-balanced" ui-sref="tab.agenda.detail({ sessionId: vm.session.id})">	
+	</button>
+</div>
+</ion-content>
+<!-- /CONTENT -->
+</ion-view>
