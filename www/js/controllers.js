@@ -1,62 +1,81 @@
 angular.module('starter.controllers', [])
 
-    .controller('AppCtrl', function ($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
 
-      // With the new view caching in Ionic, Controllers are only called
-      // when they are recreated or on app start, instead of every page change.
-      // To listen for when this page is active (for example, to refresh data),
-      // listen for the $ionicView.enter event:
-      //$scope.$on('$ionicView.enter', function(e) {
-      //});
+  // With the new view caching in Ionic, Controllers are only called
+  // when they are recreated or on app start, instead of every page change.
+  // To listen for when this page is active (for example, to refresh data),
+  // listen for the $ionicView.enter event:
+  //$scope.$on('$ionicView.enter', function(e) {
+  //});
 
-      // Form data for the login modal
+  // Form data for the login modal
 
+})
+
+.controller('AgendaCtrl', function($scope, $stateParams, DevDaysService, $log) {
+
+  var vm = this;
+
+  DevDaysService.getEvent()
+    .then(function(response) {
+      // Group our days so we can repeat over it more easily
+      vm.days = {
+        Vrijdag: getDataByDay(response.sessions, "startTime", 5),
+        Zaterdag: getDataByDay(response.sessions, "startTime", 6)
+      };
     })
+    .catch(function(error) {
+      $log.error('GetEvents error: ', error);
+    });
 
-    .controller('AgendaCtrl', function ($scope, $stateParams, DevDaysService, $log) {
+  // filter the data by the specified day on the specified key
+  function getDataByDay(data, key, day) {
+    return data.filter(function(s) {
+      return (new Date(s[key])).getDay() === day;
+    });
+  }
+})
 
-      var vm = this;
+.controller('InformatieCtrl', function($scope, $stateParams) {})
 
-      DevDaysService.getEvent()
-          .then(function (response) {
-            // Group our days so we can repeat over it more easily
-            vm.days = {
-              Vrijdag: getDataByDay(response.sessions, "startTime", 5),
-              Zaterdag: getDataByDay(response.sessions, "startTime", 6)
-            };
-          })
-          .catch(function (error) {
-            $log.error('GetEvents error: ', error);
-          });
+.controller('DetailController', function($scope, $stateParams, DevDaysService, $log) {
+    var vm = this;
 
-      // filter the data by the specified day on the specified key
-      function getDataByDay(data, key, day) {
-        return data.filter(function (s) {
-          return (new Date(s[key])).getDay() === day;
+    DevDaysService.getSessionById($stateParams.sessionId)
+      .then(function(response) {
+        $log.debug('got session:', response);
+        vm.session = response;
+      });
+  })
+  .controller('RatingController', function($scope, $stateParams, DevDaysService, $log, $state) {
+    var vm = this;
+
+    DevDaysService.getSessionById($stateParams.sessionId)
+      .then(function(response) {
+        $log.debug('got session:', response);
+        vm.session = response;
+      });
+
+    function postRating() {
+      var rating = vm.rating;
+
+      DevDaysService
+        .postRating(vm.session, rating.speakerRating, rating.sessionRating, rating.comments)
+        .then(function(response) {
+          if (response == true)
+            $state.go('detail', {
+              sessionId: vm.session.id
+            });
         });
-      }
-    })
+    }
 
-    .controller('InformatieCtrl', function ($scope, $stateParams) {
-    })
+    vm.postRating = postRating;
+    vm.rating = {
+      speakerRating: '3',
+      sessionRating: '3',
+      comments: ''
+    };
 
-    .controller('DetailController', function ($scope, $stateParams, DevDaysService, $log) {
-      var vm = this;
 
-      DevDaysService.getSessionById($stateParams.sessionId)
-          .then(function (response) {
-            $log.debug('got session:', response);
-            vm.session = response;
-          });
-    })
-    .controller('RatingController', function ($scope, $stateParams, DevDaysService, $log) {
-       var vm = this;
-
-       DevDaysService.getSessionById($stateParams.sessionId)
-          .then(function (response) {
-            $log.debug('got session:', response);
-            vm.session = response;
-          });
-       });
-
-      
+  });
