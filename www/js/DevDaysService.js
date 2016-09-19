@@ -26,6 +26,9 @@ angular.module('devdays.api', [])
       // TODO make minifcation safe?
       this.$get = function ($log, $http, $q) {
 
+        // Store our event in here
+        var event;
+
         function getEvent() {
           return $http.get(BASE_URL + '/events', {params: {'companyCode': COMPANY_GUID}})
               .then(function (response) {
@@ -37,6 +40,7 @@ angular.module('devdays.api', [])
                   });
                   // check if the specific event exists in our data
                   if (filtered && filtered[0]) {
+                    event = filtered[0];
                     return filtered[0];
                   } else {
                     return $q.reject('NO EVENT FOUND WITH ID: ' + EVENT_ID);
@@ -48,11 +52,20 @@ angular.module('devdays.api', [])
         }
 
         function getSessionById(sessionId) {
-          // TODO implement me
-          return $q.when({
-            id: 3,
-            description: 'test'
-          });
+          // use our cached event
+          if (event) {
+            return $q.when(getSession());
+          } else {
+            //else get it from the server
+            return getEvent().then(getSession);
+          }
+
+          function getSession() {
+            return event.sessions.filter(function (session) {
+              return session.id == sessionId;
+            });
+          }
+
         }
 
         //return the public API
