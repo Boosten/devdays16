@@ -24,16 +24,32 @@
         <h3>Details</h3>
         <div class="row">
           <ul class="col">
-            <li><strong>Spreker</strong></li>
-            <li><strong>Locatie</strong></li>
-            <li><strong>Tijd</strong></li>
-            <li><strong>Type</strong></li>
+            <li ng-if="vm.session.speaker.name">
+              <strong>Spreker</strong>
+            </li>
+            <li ng-if="vm.session.location">
+              <strong>Locatie</strong>
+            </li>
+            <li ng-if="vm.session.startTime&&vm.session.endTime">
+              <strong>Tijd</strong>
+            </li>
+            <li ng-if="vm.session.sessionType">
+              <strong>Type</strong>
+            </li>
           </ul>
           <ul class="col">
-            <li>{{vm.session.speaker.name}}</li>
-            <li>Zaal {{vm.session.location}}</li>
-            <li>{{ vm.session.startTime | date:'H:mm' }} - {{ vm.session.endTime | date:'H:mm' }}</li>
-            <li>{{vm.session.vm.sessionType}}</li>
+            <li ng-if="vm.session.speaker.name">
+              {{vm.session.speaker.name}}
+            </li>
+            <li ng-if="vm.session.location">
+              Zaal {{vm.session.location}}
+            </li>
+            <li ng-if="vm.session.startTime&&vm.session.endTime">
+              {{ vm.session.startTime | date:'H:mm' }} - {{ vm.session.endTime | date:'H:mm' }}
+            </li>
+            <li ng-if="vm.session.sessionType">
+              {{vm.session.sessionType}}
+            </li>
           </ul>
         </div>
       </div>
