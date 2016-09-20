@@ -8,6 +8,7 @@
 
   <!-- CONTENT -->
   <ion-content>
+    <div class="content padding">
     <div class="list card">
       <div class="item item-avatar">
         <img ng-src="{{vm.session.speaker.photoUrl}}">
@@ -18,6 +19,7 @@
       <div class="item item-body" ng-if="vm.session.details.length > 0">
         <h3>Omschrijving</h3>
         <p>{{vm.session.details}}</p>
+          <feedback-button session="vm.session" />
       </div>
 
       <div class="item">
@@ -52,6 +54,7 @@
             </li>
           </ul>
         </div>
+         <feedback-button session="vm.session" ng-if="vm.session.details == null" />
       </div>
 
       <a class="item positive item-icon-left" ng-if="vm.session.speaker.twitter" ng-href="https://twitter.com/{{vm.session.speaker.twitter}}">
@@ -62,6 +65,8 @@
         <i class="icon ion-social-linkedin"></i> Bekijk Linkedin profiel
       </a>
     </div>
+
+  
   </ion-content>
   <!-- /CONTENT -->
 

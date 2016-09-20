@@ -1,0 +1,11 @@
+<div ng-if="session.sessionType != 'Other'">
+	<p ng-if="feedbackSubmitted">
+		<i class="ion-information-circled"></i>
+		Deze sessie heb je al beoordeeld.</p>
+	<p ng-if="!feedbackAllowed">
+		<i class="ion-information-circled"></i>
+		Je kunt deze sessie nog niet beoordelen.</p>
+	<button class="button button-block button-dark" ng-if="feedbackAllowed"  ui-sref="tab.agenda.detail.rating({'sessionId': session.id})">
+	Sessie beoordelen
+	</button>
+</div>

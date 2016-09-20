@@ -11,65 +11,106 @@ angular.module('starter', [
   'devdays.settings'
 ])
 
-    .run(function ($ionicPlatform) {
-      $ionicPlatform.ready(function () {
-        // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
-        // for form inputs)
-        if (window.cordova && window.cordova.plugins.Keyboard) {
-          cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
-          cordova.plugins.Keyboard.disableScroll(true);
+.run(function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
+    // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
+    // for form inputs)
+    if (window.cordova && window.cordova.plugins.Keyboard) {
+      cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(true);
 
+    }
+    if (window.StatusBar) {
+      // org.apache.cordova.statusbar required
+      StatusBar.styleDefault();
+    }
+  });
+})
+
+.config(function($stateProvider, $urlRouterProvider, DevDaysServiceProvider, $httpProvider, APPSETTINGS) {
+
+    // Configure our API Service
+    DevDaysServiceProvider
+      .setBaseUrl(APPSETTINGS.BASEURL) // this can be a relative url (for use with Ionic serve), or a absolute url for use on an actual device
+      .setEventID(7)
+      .setCompanyGUID('C116B1BF-C4B8-4EC4-B34A-0988B99CB225');
+
+    $stateProvider
+      .state('tab', {
+        url: '/tab',
+        abstract: true,
+        templateUrl: 'templates/tabs.html',
+        controller: 'AppCtrl as vm'
+      })
+      .state('tab.agenda', {
+        url: '/agenda',
+        views: {
+          'tab-agenda': {
+            templateUrl: 'templates/agenda/agenda.html',
+            controller: 'AgendaCtrl as vm'
+          }
         }
-        if (window.StatusBar) {
-          // org.apache.cordova.statusbar required
-          StatusBar.styleDefault();
+      })
+      .state('tab.agenda.detail', {
+        url: '/:sessionId',
+        cache: false,
+        views: {
+          'tab-agenda@tab': {
+            templateUrl: 'templates/agenda/detail/detail.html',
+            controller: 'DetailController as vm'
+          }
+        }
+      })
+      .state('tab.agenda.detail.rating', {
+        url: '/mening',
+        views: {
+          'tab-agenda@tab': {
+            templateUrl: 'templates/agenda/detail/rating/rating.html',
+            controller: 'RatingController as vm'
+          }
+        }
+      })
+      .state('tab.information', {
+        url: '/informatie',
+        views: {
+          'tab-information': {
+            templateUrl: 'templates/informatie/informatie.html',
+            controller: 'AgendaCtrl as vm'
+          }
         }
       });
-    })
 
-    .config(function ($stateProvider, $urlRouterProvider, DevDaysServiceProvider, $httpProvider, APPSETTINGS) {
+    // if none of the above states are matched, use this as the fallback
+    $urlRouterProvider.otherwise('/tab/agenda');
+  })
+  .directive('feedbackButton', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        session: '='
+      },
+      controller: ['$scope', '$window', '$rootScope', function($scope, $window, $rootScope) {
 
-      // Configure our API Service
-      DevDaysServiceProvider
-          .setBaseUrl(APPSETTINGS.BASEURL) // this can be a relative url (for use with Ionic serve), or a absolute url for use on an actual device
-          .setEventID(7)
-          .setCompanyGUID('C116B1BF-C4B8-4EC4-B34A-0988B99CB225');
+        function addMinutes(date, minutes) {
+          return new Date(date.getTime() + minutes * 60000);
+        }
 
-      $stateProvider
-          .state('tab', {
-            url: '/tab',
-            abstract: true,
-            templateUrl: 'templates/tabs.html',
-            controller: 'AppCtrl as vm'
-          })
-          .state('tab.agenda', {
-            url: '/agenda',
-            views: {
-              'tab-agenda': {
-                templateUrl: 'templates/agenda/agenda.html',
-                controller: 'AgendaCtrl as vm'
-              }
-            }
-          })
-          .state('tab.agenda.detail', {
-            url: '/:sessionId',
-            views: {
-              'tab-agenda@tab': {
-                templateUrl: 'templates/agenda/detail/detail.html',
-                controller: 'DetailController as vm'
-              }
-            }
-          })
-          .state('tab.information', {
-            url: '/informatie',
-            views: {
-              'tab-information': {
-                templateUrl: 'templates/informatie/informatie.html',
-                controller: 'AgendaCtrl as vm'
-              }
-            }
-          });
+        var timeDiffInMinutes = -10;
 
-      // if none of the above states are matched, use this as the fallback
-      $urlRouterProvider.otherwise('/tab/agenda');
-    });
+        $scope.$watch('session', function(newValue, oldValue) {
+          if (newValue != null) {
+            var session = $scope.session;
+
+            var endTime = new Date(session.endTime)
+
+            var minDateTime = addMinutes(endTime, timeDiffInMinutes)
+            var sessionEndTimeWithinAllowedTimeDiff = minDateTime <= new Date();
+
+            $scope.feedbackSubmitted = $window.localStorage[session.id + session.endTime] == 1;
+            $scope.feedbackAllowed = !$scope.feedbackSubmitted && sessionEndTimeWithinAllowedTimeDiff;
+          }
+        });
+      }],
+      templateUrl: 'templates/agenda/detail/rating/feedback-button.html'
+    }
+  })

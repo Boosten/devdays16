@@ -13,21 +13,15 @@
         <ion-item class="item item-divider item-balanced">
           {{ key }}
         </ion-item>
-        <div ng-repeat="session in value | orderBy:'startTime' track by session.id" class="col col-50 item-container">
-          <div class="item" ui-sref="tab.agenda.detail({'sessionId': session.id})">
-            <div class="item-content">
-              <img ng-src="{{session.speaker.photoUrl || 'img/ionic.png'}}">
-              <h2>{{ session.title }}</h2>
-              <h2>zaal {{ session.location }}</h2>
-            </div>
-            <br/>
-            <p>{{ session.subTitle }}</p>
-            <p>{{ session.startTime | date:'H:mm' }} - {{ session.endTime | date:'H:mm' }}</p>
-          </div>
-        </div>
+        <ion-item ng-repeat="session in value | orderBy:'startTime' track by session.id" class="item item-icon-right item-avatar" ui-sref="tab.agenda.detail({'sessionId': session.id})">
+          <img ng-src="{{session.speaker.photoUrl || 'img/ionic.png'}}">
+          <h2>{{ session.title }} <span class=""> - zaal {{ session.location }}</span></h2>
+          <p>{{ session.subTitle }}</p>
+          <p>{{ session.startTime | date:'H:mm' }} - {{ session.endTime | date:'H:mm' }}</p>
+          <i class="icon ion-chevron-right"></i>
+        </ion-item>
       </div>
     </ion-list>
-  
   </ion-content>
   <!-- /CONTENT -->
 
