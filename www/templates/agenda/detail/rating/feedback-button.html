@@ -1,0 +1,8 @@
+<div>
+	<p ng-if="feedbackSubmitted">
+		<i class="ion-information-circled"></i>
+		Deze sessie heb je al beoordeeld.</p>
+	<button class="button button-block button-dark" ng-if="feedbackAllowed"  ui-sref="tab.agenda.detail.rating({'sessionId': session.id})">
+	Sessie beoordelen
+	</button>
+</div>

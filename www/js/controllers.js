@@ -48,12 +48,13 @@ angular.module('starter.controllers', [])
         vm.session = response;
       });
   })
-  .controller('RatingController', function($scope, $stateParams, DevDaysService, $log, $state) {
+  .controller('RatingController', function($scope, $stateParams, DevDaysService, $log, $state, $window) {
     var vm = this;
 
     DevDaysService.getSessionById($stateParams.sessionId)
       .then(function(response) {
         $log.debug('got session:', response);
+        // Convert array to object. Return last item from array as an object.
         vm.session = response;
       });
 
@@ -63,10 +64,12 @@ angular.module('starter.controllers', [])
       DevDaysService
         .postRating(vm.session, rating.speakerRating, rating.sessionRating, rating.comments)
         .then(function(response) {
-          if (response == true)
-            $state.go('detail', {
+          if (response.data == true) {
+            $window.localStorage[vm.session.id + vm.session.endTime] = 1;
+            $state.go('tab.agenda.detail', {
               sessionId: vm.session.id
             });
+          }
         });
     }
 
