@@ -91,13 +91,23 @@ angular.module('starter', [
       },
       controller: ['$scope', '$window', '$rootScope', function($scope, $window, $rootScope) {
 
+        function addMinutes(date, minutes) {
+          return new Date(date.getTime() + minutes * 60000);
+        }
 
+        var timeDiffInMinutes = -10;
 
         $scope.$watch('session', function(newValue, oldValue) {
           if (newValue != null) {
             var session = $scope.session;
+
+            var endTime = new Date(session.endTime)
+
+            var minDateTime = addMinutes(endTime, timeDiffInMinutes)
+            var sessionEndTimeWithinAllowedTimeDiff = minDateTime <= new Date();
+
             $scope.feedbackSubmitted = $window.localStorage[session.id + session.endTime] == 1;
-            $scope.feedbackAllowed = session.sessionType != 'Other' && !$scope.feedbackSubmitted;
+            $scope.feedbackAllowed = !$scope.feedbackSubmitted && sessionEndTimeWithinAllowedTimeDiff;
           }
         });
       }],
