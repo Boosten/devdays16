@@ -1,15 +1,72 @@
 <ion-view class="detail-view">
-  
+
   <!-- NAVBAR -->
   <ion-nav-title>
     Detail
   </ion-nav-title>
   <!-- /NAVBAR -->
-  
+
   <!-- CONTENT -->
   <ion-content>
-    detail view:
-    <pre>{{ vm.session |json }}</pre>
+    <div class="content padding">
+    <div class="list card">
+      <div class="item item-avatar">
+        <img ng-src="{{vm.session.speaker.photoUrl}}">
+        <h2>{{vm.session.title}}</h2>
+        <p>{{vm.session.subTitle}}</p>
+      </div>
+
+      <div class="item item-body" ng-if="vm.session.details.length > 0">
+        <h3>Omschrijving</h3>
+        <p>{{vm.session.details}}</p>
+          <feedback-button session="vm.session" />
+      </div>
+
+      <div class="item">
+        <h3>Details</h3>
+        <div class="row">
+          <ul class="col">
+            <li ng-if="vm.session.speaker.name">
+              <strong>Spreker</strong>
+            </li>
+            <li ng-if="vm.session.location">
+              <strong>Locatie</strong>
+            </li>
+            <li ng-if="vm.session.startTime&&vm.session.endTime">
+              <strong>Tijd</strong>
+            </li>
+            <li ng-if="vm.session.sessionType">
+              <strong>Type</strong>
+            </li>
+          </ul>
+          <ul class="col">
+            <li ng-if="vm.session.speaker.name">
+              {{vm.session.speaker.name}}
+            </li>
+            <li ng-if="vm.session.location">
+              Zaal {{vm.session.location}}
+            </li>
+            <li ng-if="vm.session.startTime&&vm.session.endTime">
+              {{ vm.session.startTime | date:'H:mm' }} - {{ vm.session.endTime | date:'H:mm' }}
+            </li>
+            <li ng-if="vm.session.sessionType">
+              {{vm.session.sessionType}}
+            </li>
+          </ul>
+        </div>
+         <feedback-button session="vm.session" ng-if="vm.session.details == null" />
+      </div>
+
+      <a class="item positive item-icon-left" ng-if="vm.session.speaker.twitter" ng-href="https://twitter.com/{{vm.session.speaker.twitter}}">
+        <i class="icon ion-social-twitter"></i> Volg {{vm.session.speaker.name}} op Twitter
+      </a>
+
+      <a class="item calm item-icon-left" ng-if="vm.session.speaker.linkedIn" ng-href="{{vm.session.speaker.linkedIn}}">
+        <i class="icon ion-social-linkedin"></i> Bekijk Linkedin profiel
+      </a>
+    </div>
+
+  
   </ion-content>
   <!-- /CONTENT -->
 
