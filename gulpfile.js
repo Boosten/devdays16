@@ -9,7 +9,7 @@ var sh = require('shelljs');
 var ngConstant = require('gulp-ng-constant');
 
 var paths = {
-  sass: ['./scss/**/*.scss']
+  sass: ['./scss/**/*.scss', './www/templates/**/*.scss', './']
 };
 
 var environments = {
